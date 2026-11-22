@@ -11,7 +11,8 @@ idioma_salidas: es
 freecad:
   version: "1.1.3"
   sistema_operativo: Windows
-  ruta_freecadcmd: PENDIENTE    # p. ej. carpeta bin de la instalación; confirmar en su equipo
+  carpeta_instalacion: "C:\\Program Files\\FreeCAD 1.1"
+  ruta_freecadcmd: "C:\\Program Files\\FreeCAD 1.1\\bin\\freecadcmd.exe"  # nombre del ejecutable por verificar en el equipo
   workbenches: [Part, PartDesign, TechDraw, Spreadsheet]
 materiales_habilitados: [contrachapado, aglomerado_melaminico, mdf, pvc]
 herramientas_disponibles: [sierra_circular, sierra_caladora, router, taladro]

@@ -1,0 +1,32 @@
+# Datos tomados de homecenter.com.co el 2026-11-22 (Pavco Wavin). Precio puede cambiar.
+# La ficha NO publica diámetro exterior ni espesor de pared.
+# diametro_exterior_mm: valor estándar 3/4" IPS (1.050"); VERIFICAR con calibrador antes de fabricar.
+items:
+  - codigo: PVC-T-34
+    descripcion: Tubo PVC presión 3/4" x 6 m, 400 psi (título "11-400psi")
+    sku_proveedor: "65892"
+    marca: Pavco Wavin
+    diametro_nominal: 3/4"
+    longitud_mm: 6000          # también existe en 1 m y 3 m
+    presion_psi: 400
+    norma: NTC 382 (según ficha)
+    union: soldada (cemento solvente), extremo liso
+    diametro_exterior_mm: 26.67  # VERIFICAR
+    espesor_pared_mm: PENDIENTE  # medir
+    precio_cop: 34900
+    fuente: https://www.homecenter.com.co/homecenter-co/product/04722/tubo-de-presion-de-3-4x6m-11-400psi/65892/
+accesorios:
+  - codigo: PVC-TEE-34
+    descripcion: Tee 3/4" presión, campana para soldar
+    sku_proveedor: "04728"
+    presion_psi: 480
+    profundidad_campana_mm: PENDIENTE  # medir; define la longitud de corte de los tubos
+    precio_cop: 2400
+    fuente: https://www.homecenter.com.co/homecenter-co/product/04728/tee-3-4-presion/04728/
+  - codigo: PVC-TAP-R-34
+    descripcion: Tapón roscado 3/4" presión
+    sku_proveedor: "04743"
+    presion_psi: 480
+    nota: roscado; sobre tubo liso necesita adaptador macho roscado. Confirmar con usuario.
+    precio_cop: 2550
+    fuente: https://www.homecenter.com.co/homecenter-co/product/04743/tapon-roscado-3-4-presion/04743/

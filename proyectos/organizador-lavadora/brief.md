@@ -13,6 +13,9 @@ Estado: BORRADOR — pendiente de aprobación del usuario.
 - Estantes: triplex 15 mm (TRX-15), que el usuario ya tiene.
 - Broca/copa: el usuario comprará la que se especifique.
 - Tee 3/4": profundidad de campana 25 mm (medido por el usuario; no aplica a 1").
+- Tee 1": diámetro exterior 40 mm, 70 × 60 × 40 mm, campana 22 mm (medido por el usuario).
+- Envases: altura máxima 350 mm (usuario).
+- Apoyo de estantes: listón sobre larguero aprobado por el usuario (material PENDIENTE).
 
 ## Datos técnicos verificados
 | Dato | Valor | Fuente |
@@ -37,6 +40,9 @@ diámetro exterior del cuerpo de la tee, largo total de la tee, altura de la lav
 - Estante inferior por encima de la altura con tapa abierta + holgura para meter la mano.
 
 ## Supuestos y pendientes
-- Tee 1": diámetro exterior de la boca, largo total y precio (no publicados).
+- Precio de la tee 1".
+- Medidas del codo 1" (el modelo usa las de la tee).
+- Material del listón de 18 mm.
+- Solo cabe un nivel con 350 mm libres; el estante 2 queda como remate con 215 mm hasta el techo (opción propuesta, pendiente de confirmar).
 - Fondo real de la lavadora (ficha dice 540 y 560 mm); se usa 560 para holguras.
 - Rigidez sin anclaje: posible necesidad de refuerzos extra (ver propuesta en el hilo).

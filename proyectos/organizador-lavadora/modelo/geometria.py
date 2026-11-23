@@ -117,7 +117,7 @@ def herrajes():
     est_lis = TRIPLEX + LISTON["alto"]             # estante + listón
     pan_tubo = TRIPLEX + TUBO_DE                   # panel + paral
     return [
-        dict(codigo="TOR-1", descripcion=f'Tornillo madera 2" (50,8 mm) tubo a listón; recorrido disponible {pasa_tubo:.1f} mm',
+        dict(codigo="TOR-1", descripcion=f'Tornillo madera 1-3/4" (44,5 mm) + arandela, tubo a listón; recorrido disponible {pasa_tubo:.1f} mm (entra ~{44.5 - TUBO_DE:.0f} mm en el listón)',
              cantidad=n_lis * TORNILLOS_TUBO_POR_LISTON, modelo="PENDIENTE"),
         dict(codigo="TOR-2", descripcion=f'Tornillo madera 1-1/4" (31,8 mm) estante a listón; recorrido disponible {est_lis:.1f} mm',
              cantidad=n_lis * TORNILLOS_ESTANTE_POR_LISTON, modelo="PENDIENTE"),

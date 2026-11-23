@@ -3,13 +3,16 @@
 Estado: BORRADOR — pendiente de aprobación del usuario.
 
 ## Datos del usuario (2026-11-22)
-- Lavadora: LG carga superior 9 kg, Smart Inverter / TurboDrum. Modelo exacto: PENDIENTE.
+- Lavadora: LG WT9DPB (carga superior 9 kg). Altura con tapa abierta: 1240 mm (medido por el usuario).
 - Espacio: ancho 840 mm, fondo 710 mm, alto a techo 2080 mm.
 - Disposición: sobre la lavadora (tipo organizador estándar). Sin anclaje a pared: la estructura debe ser rígida por sí misma.
 - Estantes: 2. Contenido: productos de aseo (frascos, detergentes, jabones, aromatizantes).
 - Unión estante–estructura: tubos pasan por perforaciones en el triplex.
 - Estructura: tubo PVC presión 3/4" RDE 11 (PVC-T-34). Estantes: triplex Refopanel (TRX-15/TRX-18).
 - Acabado: sellador para madera + barniz.
+- Estantes: triplex 15 mm (TRX-15), que el usuario ya tiene.
+- Broca/copa: el usuario comprará la que se especifique.
+- Tee 3/4": profundidad de campana 25 mm (medido por el usuario).
 
 ## Datos técnicos verificados
 | Dato | Valor | Fuente |
@@ -19,6 +22,9 @@ Estado: BORRADOR — pendiente de aprobación del usuario.
 | Tubo 3/4" RDE 11: diámetro interior | 21,81 mm | ídem |
 | LG WT9DSBP (alto × ancho × fondo) | 925 × 540 × 540 mm | lg.com/co, ficha del modelo |
 | LG WT9ELR (ancho × alto × fondo) | 520 × 900 × 530 mm | lg.com/co, ficha del modelo |
+| LG WT9DPB | ancho 540, alto 850, fondo 540 o 560 mm (la ficha se contradice) | lg.com/pe, ficha del modelo |
+| Tubo 1" RDE 13.5 (315 psi) | ext. 33,40 / pared 2,46 / int. 28,48 mm | Pavco download/363 |
+| Tubo 1" RDE 21 (200 psi) | ext. 33,40 / pared 1,60 / int. 30,20 mm | Pavco download/363 |
 
 No publicados por el fabricante (deben medirse): profundidad de campana de la tee 3/4",
 diámetro exterior del cuerpo de la tee, largo total de la tee, altura de la lavadora con la tapa abierta.
@@ -31,7 +37,7 @@ diámetro exterior del cuerpo de la tee, largo total de la tee, altura de la lav
 - Estante inferior por encima de la altura con tapa abierta + holgura para meter la mano.
 
 ## Supuestos y pendientes
-- Modelo exacto de lavadora y altura con tapa abierta.
-- Medidas de la tee (campana, cuerpo, largo).
-- Grosor del triplex (15 o 18 mm) y broca/copa disponible para las perforaciones.
+- Diámetro de tubo: 3/4" vs 1" (decisión del usuario).
+- Medidas de la tee: diámetro exterior de la boca y largo total.
+- Fondo real de la lavadora (ficha dice 540 y 560 mm); se usa 560 para holguras.
 - Rigidez sin anclaje: posible necesidad de refuerzos extra (ver propuesta en el hilo).

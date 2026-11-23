@@ -33,9 +33,9 @@ def prisma(ax, poly, z0, h, color, alpha, ec="#5d4037"):
     ax.add_collection3d(Poly3DCollection(caras, facecolor=color, edgecolor=ec, linewidths=0.5, alpha=alpha))
 
 def poly_muescas(o, d, m):
-    x0, y0 = o[0], o[1]; x1, y1 = x0 + d[0], y0 + d[1]; mx, my = m
-    return [(x0+mx, y0), (x1-mx, y0), (x1-mx, y0+my), (x1, y0+my), (x1, y1-my), (x1-mx, y1-my), (x1-mx, y1),
-            (x0+mx, y1), (x0+mx, y1-my), (x0, y1-my), (x0, y0+my), (x0+mx, y0+my)]
+    x0, y0 = o[0], o[1]; x1, y1 = x0 + d[0], y0 + d[1]; mx, mf, mb = m
+    return [(x0+mx, y0), (x1-mx, y0), (x1-mx, y0+mf), (x1, y0+mf), (x1, y1-mb), (x1-mx, y1-mb), (x1-mx, y1),
+            (x0+mx, y1), (x0+mx, y1-mb), (x0, y1-mb), (x0, y0+mf), (x0+mx, y0+mf)]
 
 def recortar_seg(a, b, lim):
     a, b = np.array(a, float), np.array(b, float); t0, t1 = 0.0, 1.0
@@ -110,6 +110,6 @@ dibujar(fig.add_subplot(1,2,1, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+2
         "Detalle esquina delantera, estante 1", lavadora=False, etiquetas=True)
 dibujar(fig.add_subplot(1,2,2, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+200),(g.Z_EST2-120, g.Z_EST2+160)), 22, -50,
         "Detalle esquina delantera, estante 2 (remate)", lavadora=False, etiquetas=True)
-fig.suptitle(f"Uniones: estante 1 con muescas de {g.muesca()[0]} x {g.muesca()[1]} mm que abrazan el paral; estante 2 entero sobre los codos. Ambos apoyan en listones y se fijan con abrazaderas", fontsize=11)
+fig.suptitle("Uniones: estante 1 con muescas que abrazan el paral; estante 2 entero sobre los codos. Ambos apoyan en listones y se fijan con abrazaderas", fontsize=11)
 fig.savefig(os.path.join(out_dir, "vista-detalle-uniones.png"), bbox_inches="tight")
 print("ok")

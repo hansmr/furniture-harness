@@ -33,15 +33,32 @@ Z_PISO = TEE["de"] / 2   # eje de los codos del piso
 HOLGURA_MANO = 100       # sobre la tapa abierta
 
 
+def y_panel():
+    """Cara delantera del panel trasero: apoyada contra el cuerpo de los accesorios (r = 20)."""
+    return CY + TEE["de"] / 2
+
+
+def y_estante(i):
+    """(y_frente, y_fondo) de cada estante. El estante 1 termina contra el panel; el 2 lo tapa por encima."""
+    y_fr = -(CY + MARGEN_ESTANTE)
+    y_fo = y_panel() - 1 if i == 1 else y_panel() + TRIPLEX
+    return y_fr, y_fo
+
+
 def muesca():
-    """Tamaño de la muesca cuadrada en cada esquina del estante 1 (libra el paral que sigue hacia arriba)."""
-    m = MARGEN_ESTANTE + TUBO_DE / 2 + HOLGURA_PARAL
-    return (round(m), round(m))
+    """(mx, my_frente, my_fondo) en mm: muescas del estante 1 para librar el paral que sigue hacia arriba."""
+    lim = TUBO_DE / 2 + HOLGURA_PARAL
+    y_fr, y_fo = y_estante(1)
+    mx = MARGEN_ESTANTE + lim
+    my_fr = (-(CY - lim)) - y_fr
+    my_fo = y_fo - (CY - lim)
+    return (round(mx), round(my_fr), round(my_fo))
 
 
 def dims_estante():
     if VARIANTE_ESTANTE == "muescas":
-        return 2 * (CX + MARGEN_ESTANTE), 2 * (CY + MARGEN_ESTANTE)
+        y_fr, y_fo = y_estante(1)
+        return 2 * (CX + MARGEN_ESTANTE), y_fo - y_fr
     lx = 2 * (CX - TEE["de"] / 2 - HOLGURA_PARAL)     # cabe entre las tees de los parales
     ly = 2 * (CY + MARGEN_ESTANTE)                      # sobresale por delante y por detrás de los largueros
     return lx, ly
@@ -74,13 +91,14 @@ def piezas():
     for i, z in enumerate((Z_EST1, Z_EST2), 1):
         # Estante 1: el paral sigue hacia arriba -> muescas. Estante 2: arriba solo hay codos -> sin muescas.
         mus = muesca() if (VARIANTE_ESTANTE == "muescas" and i == 1) else None
-        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, -ly/2, z + r_run), dims=(lx, ly, TRIPLEX),
+        y_fr, y_fo = y_estante(i)
+        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, y_fr, z + r_run), dims=(lx, y_fo - y_fr, TRIPLEX),
                       perforaciones=[], muesca=mus))
         for sy in (-1, 1):  # listones sobre largueros, entre tees/codos
-            largo = 2 * CX - TEE["de"]
+            largo = 2 * (CX - TEE["largo"] / 2) - 2 * HOLGURA_PARAL   # entre las bocas de tees/codos
             p.append(dict(codigo=f"LIS-{l:02d}", tipo="liston", origen=(-largo/2, sy*CY - LISTON["ancho"]/2, z + r_run - LISTON["alto"]),
                           dims=(largo, LISTON["ancho"], LISTON["alto"]), perforaciones=[])); l += 1
-    y0 = CY + TUBO_DE / 2
+    y0 = y_panel()
     pan_x = 2 * (CX + MARGEN_ESTANTE)
     p.append(dict(codigo="PAN-01", tipo="tablero", origen=(-pan_x/2, y0, Z_EST1), dims=(pan_x, TRIPLEX, Z_EST2 - Z_EST1 + r_run), perforaciones=[]))
     return p
@@ -113,10 +131,12 @@ def verificaciones():
     lx, ly = dims_estante()
     ancho_total = 2 * (CX + MARGEN_ESTANTE)
     r.append((ancho_total <= ESPACIO["ancho"], f"Ancho total (panel) {ancho_total} <= espacio {ESPACIO['ancho']}"))
-    r.append((ly + TRIPLEX <= ESPACIO["fondo"], f"Fondo estante+panel {ly + TRIPLEX} <= espacio {ESPACIO['fondo']}"))
-    txt = f"Estante {lx:.0f} x {ly:.0f} mm, sin perforaciones"
+    fondo_total = (y_panel() + TRIPLEX) - y_estante(1)[0]
+    r.append((fondo_total <= ESPACIO["fondo"], f"Fondo total {fondo_total:.0f} <= espacio {ESPACIO['fondo']}"))
+    txt = f"Estante 1: {lx:.0f} x {ly:.0f} mm; estante 2: {lx:.0f} x {y_estante(2)[1] - y_estante(2)[0]:.0f} mm; sin perforaciones"
     if VARIANTE_ESTANTE == "muescas":
-        txt += f"; estante 1 con muescas de {muesca()[0]} x {muesca()[1]} mm en las 4 esquinas"
+        mx, mf, mb = muesca()
+        txt += f"; estante 1 con muescas {mx} x {mf} mm (frente) y {mx} x {mb} mm (fondo)"
     r.append((True, txt + " (INFORMATIVO)"))
     libre_x = 2 * CX - TEE["de"]
     r.append((libre_x > LAVADORA["ancho"], f"Paso libre entre parales {libre_x} > lavadora {LAVADORA['ancho']}"))

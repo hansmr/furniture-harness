@@ -33,9 +33,10 @@ def cuerpo_accesorio(centro, de, largo, ramas):
 def tablero(origen, dims, perforaciones, de_perf, muesca=None):
     caja = Part.makeBox(*dims, V(*origen))
     if muesca:
-        mx, my = muesca
+        mx, mf, mb = muesca
         x0, y0, z0 = origen
-        for (ex, ey) in ((x0, y0), (x0 + dims[0] - mx, y0), (x0, y0 + dims[1] - my), (x0 + dims[0] - mx, y0 + dims[1] - my)):
+        for (ex, ey, my) in ((x0, y0, mf), (x0 + dims[0] - mx, y0, mf),
+                             (x0, y0 + dims[1] - mb, mb), (x0 + dims[0] - mx, y0 + dims[1] - mb, mb)):
             caja = caja.cut(Part.makeBox(mx, my, dims[2] + 2, V(ex, ey, z0 - 1)))
     for (x, y) in perforaciones:
         caja = caja.cut(Part.makeCylinder(de_perf / 2, dims[2] + 2, V(x, y, origen[2] - 1)))
@@ -71,6 +72,21 @@ if True:  # freecadcmd ejecuta el script directamente
     Import.export([o for o in doc.Objects if hasattr(o, "Shape")], os.path.join(salidas, "organizador-lavadora.step"))
     for ok, t in g.verificaciones():
         print("OK   " if ok else "FALTA", t)
+    # Interferencias entre piezas (los accesorios son cilindros aproximados; los tubos entran en ellos a propósito)
+    objs = [o for o in doc.Objects if hasattr(o, "Shape") and o.Shape.Volume > 0]
+    choques = 0
+    for i, a in enumerate(objs):
+        for b in objs[i + 1:]:
+            tipos = {a.Label[:3], b.Label[:3]}
+            if tipos <= {"TUB", "TEE", "COD"}:
+                continue  # unión tubo-accesorio prevista
+            if not a.Shape.BoundBox.intersect(b.Shape.BoundBox):
+                continue
+            v = a.Shape.common(b.Shape).Volume
+            if v > 1.0:
+                choques += 1
+                print(f"CHOQUE {a.Label} x {b.Label}: {v:.0f} mm3")
+    print(f"Interferencias de madera: {choques}")
     for h in g.herrajes():
         print(f"  herraje {h['codigo']}: {h['descripcion']} x {h['cantidad']} ({h['modelo']})")
     for c, L in g.longitudes_corte():

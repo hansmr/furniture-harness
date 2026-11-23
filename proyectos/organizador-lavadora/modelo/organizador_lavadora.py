@@ -55,13 +55,17 @@ def construir():
                 shp = cuerpo_accesorio(p["centro"], g.CODO["de"], 2 * brazo, p["ramas"])
             else:
                 shp = cuerpo_accesorio(p["centro"], g.TEE["de"], g.TEE["largo"], p["ramas"])
+        elif p["tipo"] == "diagonal":
+            v = g.vertices_diagonal(p)
+            cara = Part.Face(Part.makePolygon([V(*q) for q in v[:4]] + [V(*v[0])]))
+            shp = cara.extrude(V(p["sx"] * p["espesor"], 0, 0))
         else:
             shp = tablero(p["origen"], p["dims"], p["perforaciones"], perf, p.get("muesca"))  # tablero o listón
         obj = doc.addObject("Part::Feature", p["codigo"].replace("-", "_"))
         obj.Label = p["codigo"]
         obj.Shape = shp
         obj.addProperty("App::PropertyString", "Material", "Mueble")
-        obj.Material = {"tablero": "Triplex 15 mm (TRX-15)", "liston": "PENDIENTE (listón 18 mm)"}.get(p["tipo"], "PVC presión 1\" RDE 13.5")
+        obj.Material = {"tablero": "Triplex 15 mm (TRX-15)", "diagonal": "Triplex 15 mm (TRX-15)", "liston": "PENDIENTE (listón 18 mm)"}.get(p["tipo"], "PVC presión 1\" RDE 13.5")
     doc.recompute()
     return doc
 

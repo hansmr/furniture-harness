@@ -28,7 +28,7 @@ SAL = os.path.join(AQUI, "..", "salidas")
 os.makedirs(SAL, exist_ok=True)
 HOY = datetime.date.today().isoformat()
 PROYECTO = "Organizador de lavadora"
-REV = "A"
+REV = "B"
 KERF_TUBO = 4          # mm, mismo valor que config (kerf proveedor); conservador para corte manual
 LARGO_TUBO = 6000      # PVC-T-1, catálogo
 PRECIO_TUBO = 38900    # PVC-T-1, catálogo (Homecenter, 2026-11-22)
@@ -108,6 +108,10 @@ def generar_bom():
     for p in tableros + listones:
         L, A, E = sorted(p["dims"], reverse=True)
         madera.append((p["codigo"], L, A, E, "muescas" if p.get("muesca") else ""))
+    for p in PIEZAS:
+        if p["tipo"] == "diagonal":
+            madera.append((p["codigo"], round(g.largo_diagonal(p)), p["ancho"], p["espesor"],
+                           f"extremos cortados a plomo ({90 - g.angulo_diagonal(p):.1f}° respecto al largo)"))
 
     try:
         from openpyxl import Workbook
@@ -236,6 +240,18 @@ def proyectar(p, vista):
             else:
                 x0, x1 = sorted([u[0], v[0]]); y0, y1 = sorted([u[1], v[1]])
                 out.append(("rect", (x0 - rr, y0), 2 * rr, y1 - y0) if x1 - x0 < 1e-6 else ("rect", (x0, y0 - rr), x1 - x0, 2 * rr))
+    elif p["tipo"] == "diagonal":
+        v = np.array(g.vertices_diagonal(p))
+        pts = sorted(set((round(q[ix], 3), round(q[iy], 3)) for q in v))
+        def cross(o_, a_, b_): return (a_[0]-o_[0])*(b_[1]-o_[1]) - (a_[1]-o_[1])*(b_[0]-o_[0])
+        lo, up = [], []
+        for q in pts:
+            while len(lo) >= 2 and cross(lo[-2], lo[-1], q) <= 0: lo.pop()
+            lo.append(q)
+        for q in reversed(pts):
+            while len(up) >= 2 and cross(up[-2], up[-1], q) <= 0: up.pop()
+            up.append(q)
+        out.append(("poly", lo[:-1] + up[:-1]))
     else:
         o, d = p["origen"], p["dims"]
         if vista == "planta" and p.get("muesca"):
@@ -248,7 +264,7 @@ def proyectar(p, vista):
     return out
 
 
-COLORES = {"tubo": "#eceff1", "tee": "#b0bec5", "codo": "#b0bec5", "tablero": "#f3dfc1", "liston": "#d7b899"}
+COLORES = {"tubo": "#eceff1", "tee": "#b0bec5", "codo": "#b0bec5", "tablero": "#f3dfc1", "liston": "#d7b899", "diagonal": "#e6c79c"}
 
 
 def dibujar_vista(ax, vista, ox, oy, esc, orden=None):
@@ -274,6 +290,8 @@ def orden_vista(vista):
     def clave(p):
         if p["tipo"] == "tubo":
             v = (p["a"][prof] + p["b"][prof]) / 2
+        elif p["tipo"] == "diagonal":
+            v = np.mean([q[prof] for q in g.vertices_diagonal(p)])
         elif p["tipo"] in ("tee", "codo"):
             v = p["centro"][prof]
         else:
@@ -356,6 +374,15 @@ def generar_planos():
             ax.add_patch(Rectangle((190, yy), d[0] * e5, 3, fc=COLORES["liston"], ec="k", lw=0.4))
             ax.text(190 + d[0] * e5 + 3, yy + 1.5, f"{c}: {d[0]:.0f} x {d[1]:.0f} x {d[2]:.0f}", fontsize=6.5, va="center")
             yy -= 9
+        dg = [p for p in PIEZAS if p["tipo"] == "diagonal"][0]
+        Ld, A_d, ang = g.largo_diagonal(dg), dg["ancho"], g.angulo_diagonal(dg)
+        off = A_d / math.tan(math.radians(ang))
+        dx, dy = 190, 70
+        pts = [(0, 0), (Ld - off, 0), (Ld, A_d), (off, A_d)]
+        ax.add_patch(Polygon([(dx + x * e5, dy + y * e5) for x, y in pts], fc=COLORES["diagonal"], ec="k", lw=0.4))
+        ax.text(dx, dy + 12, "DIA-01 / DIA-02  Diagonal lateral (2 und, triplex 15)", fontsize=8, weight="bold")
+        ax.text(dx, dy - 8, f"Largo total {Ld:.0f} x ancho {A_d} mm. Extremos a plomo: {90 - ang:.1f}° respecto al largo "
+                f"(desfase {off:.0f} mm).", fontsize=6.5)
         pdf.savefig(fig); plt.close(fig)
 
         # Hoja 3: tubos
@@ -447,6 +474,11 @@ def generar_explotado():
                 cil3d(ax, c, c + np.array(d) * arm, 20, "#90a4ae")
             if p["centro"][0] < 0 and p["centro"][1] < 0:
                 etiquetas.append((c, p["codigo"]))
+        elif p["tipo"] == "diagonal":
+            v = np.array(g.vertices_diagonal(p)) + [p["sx"] * 300, 0, 120]
+            caras = [v[[0,1,2,3]], v[[4,5,6,7]], v[[0,1,5,4]], v[[1,2,6,5]], v[[2,3,7,6]], v[[3,0,4,7]]]
+            ax.add_collection3d(Poly3DCollection(caras, facecolor="#d7a86e", edgecolor="#5d4037", linewidths=0.4, alpha=0.85))
+            etiquetas.append((v.mean(axis=0), p["codigo"]))
         else:
             o = np.array(p["origen"]) + [0, dy, dz]
             poly = None
@@ -458,7 +490,7 @@ def generar_explotado():
             etiquetas.append((o + np.array(p["dims"]) * [0.5, 0.5, 1], p["codigo"]))
     # globos a la izquierda (piezas de estructura) o a la derecha (madera), con línea guía
     for pos, txt in etiquetas:
-        lado = 1 if txt[:3] in ("EST", "PAN", "LIS") else -1
+        lado = 1 if txt[:3] in ("EST", "PAN", "LIS", "DIA") else -1
         tx = np.array([lado * 750, pos[1], pos[2]])
         ax.plot([pos[0], tx[0]], [pos[1], tx[1]], [pos[2], tx[2]], color="#b71c1c", lw=0.4)
         ax.text(*tx, txt, fontsize=8, color="#b71c1c", ha="left" if lado > 0 else "right", va="center",
@@ -509,19 +541,27 @@ def pasos_guia():
         ("7. Panel trasero",
          ["Apoya PAN-01 detrás de los parales del fondo, desde el estante 1 hasta los codos de arriba.",
           f"Atorníllalo a los parales con {h['TOR-3']['cantidad']} tornillos TOR-3 (2\"), 2 por paral. La punta asoma ~2 mm por delante del paral."]),
+        ("7b. Diagonales laterales",
+         [f"Corta DIA-01 y DIA-02 del sobrante de triplex: {round(g.largo_diagonal([q for q in PIEZAS if q['tipo']=='diagonal'][0]))} x {g.DIAGONAL['ancho']} mm, con los extremos a plomo (plano hoja 2).",
+          "Colócalas por fuera de cada costado, de abajo adelante hacia arriba atrás, apoyadas contra tees y codos.",
+          f"Atornilla cada extremo al paral con un tornillo TOR-3 que atraviese el tubo (hueco previo de {g.BROCA_PASO_TUBO} mm en el PVC)."]),
         ("8. Estante 2",
          ["Pon EST-02 encima de los codos y listones de arriba, tapando el borde superior del panel.",
           "Atornilla desde arriba al listón: 2 tornillos TOR-2 por listón."]),
         ("9. Instalación",
          ["Coloca el mueble sobre la lavadora sin que la toque en ningún punto.",
           f"Abre la tapa por completo y confirma que pasa por debajo del estante 1 (tapa {g.LAVADORA['alto_tapa_abierta']} mm, estante libre a {g.Z_EST1 - g.TUBO_DE / 2:.0f} mm).",
-          "Nivela el mueble. No se ancla a la pared (decisión del usuario).",
-          "No se calculó una carga máxima: usa los estantes para productos de aseo como se definió y distribuye el peso."]),
+          "Nivela el mueble.",
+          "Fija los 2 parales traseros a la pared con escuadras ESC-1 a la altura del estante 2; evita el vuelco.",
+          "Prueba de carga antes de usar: pon pesos conocidos (p. ej. bolsas de 5 kg) en el estante 1 hasta 20 kg y mide cuánto baja el centro; si baja más de 3-4 mm, reduce la carga.",
+          "Carga recomendada (estimación, no ensayo): hasta 15-20 kg por estante, lo pesado abajo.",
+          "No la hales desde arriba, y no la uses cargada antes de fijar las escuadras: sin ellas, unos 6 kg de fuerza arriba la pueden volcar."]),
         ("Supuestos y pendientes",
          ["Campana del codo 1\" supuesta en 22 mm (igual a la tee).",
           "Material del listón de 18 mm, modelo exacto de tornillos, arandelas y soldadura: PENDIENTE.",
           "Posición de tornillos (1/4 y 3/4 del listón) es una propuesta, no está modelada.",
-          "Carga máxima de los estantes: no calculada."]),
+          "Carga recomendada de 15-20 kg por estante: estimación a mano con módulo típico de PVC (no del fabricante); confirmar con la prueba de carga.",
+          "Modelo de escuadra, tornillos y chazos: PENDIENTE (depende del tipo de muro)."]),
     ]
 
 

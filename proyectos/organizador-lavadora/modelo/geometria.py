@@ -4,6 +4,7 @@ La consumen: organizador_lavadora.py (FreeCAD) y vista_previa.py (render rápido
 Origen: centro del espacio en planta, z=0 en el piso. X = ancho, Y = fondo (+Y hacia la pared), Z = alto.
 Valores marcados PROPUESTA requieren aprobación del usuario.
 """
+import math
 
 # --- Datos verificados (ver brief.md / catalogos) ---
 ESPACIO = dict(ancho=840, fondo=710, alto=2080)         # usuario
@@ -34,6 +35,10 @@ TORNILLOS_PANEL = 4               # panel -> parales del fondo, desde atrás
 BROCA_PASO_TUBO = 4.5             # PROPUESTA: hueco pasante en el PVC para que el tornillo pase libre
 LISTON = dict(alto=18, ancho=30)  # PROPUESTA: listón sobre larguero; material PENDIENTE
 HOLGURA_ENVASE = 20
+# Refuerzos (usuario aprobó "lo recomendado", 2026-11-22):
+DIAGONAL = dict(ancho=60, espesor=TRIPLEX, z_bajo=110, z_alto_margen=70)  # tira de triplex 15 mm por fuera de cada costado
+TORNILLOS_DIAGONAL = 2           # uno en cada paral, atravesando el tubo
+ESCUADRAS_PARED = 2              # antivuelco: confirmado por el usuario 2026-11-22
 Z_PISO = TEE["de"] / 2   # eje de los codos del piso
 HOLGURA_MANO = 100       # sobre la tapa abierta
 
@@ -107,7 +112,34 @@ def piezas():
     y0 = y_panel()
     pan_x = 2 * (CX + MARGEN_ESTANTE)
     p.append(dict(codigo="PAN-01", tipo="tablero", origen=(-pan_x/2, y0, Z_EST1), dims=(pan_x, TRIPLEX, Z_EST2 - Z_EST1 + r_run), perforaciones=[]))
+    # Diagonales laterales: del paral delantero (abajo) al trasero (bajo la tee del estante 1), por fuera
+    for k, sx in enumerate((-1, 1), 1):
+        x0 = sx * (CX + TEE["de"] / 2)   # cara exterior contra el cuerpo de los accesorios
+        a = (-CY, DIAGONAL["z_bajo"]); b = (CY, Z_EST1 - DIAGONAL["z_alto_margen"])
+        p.append(dict(codigo=f"DIA-{k:02d}", tipo="diagonal", x0=x0, sx=sx, a=a, b=b, ancho=DIAGONAL["ancho"], espesor=DIAGONAL["espesor"]))
     return p
+
+
+def vertices_diagonal(p):
+    """8 vértices (x, y, z) de una diagonal: tira rectangular en el plano YZ, extruida hacia afuera en X.
+    Los extremos se cortan a escuadra con el eje del paral (corte vertical), para atornillar en el paral."""
+    (ya, za), (yb, zb) = p["a"], p["b"]
+    ang = math.atan2(zb - za, yb - ya)
+    h = p["ancho"] / 2 / math.cos(ang)   # media altura vertical en el corte a plomo
+    cara = [(ya, za - h), (yb, zb - h), (yb, zb + h), (ya, za + h)]
+    x0, x1 = p["x0"], p["x0"] + p["sx"] * p["espesor"]
+    return [(x0, y, z) for y, z in cara] + [(x1, y, z) for y, z in cara]
+
+
+def largo_diagonal(p):
+    (ya, za), (yb, zb) = p["a"], p["b"]
+    ang = math.atan2(zb - za, yb - ya)
+    return math.hypot(yb - ya, zb - za) + p["ancho"] * math.tan(ang)  # largo de la pieza bruta antes de los cortes inclinados
+
+
+def angulo_diagonal(p):
+    (ya, za), (yb, zb) = p["a"], p["b"]
+    return math.degrees(math.atan2(zb - za, yb - ya))
 
 
 def herrajes():
@@ -121,8 +153,10 @@ def herrajes():
              cantidad=n_lis * TORNILLOS_TUBO_POR_LISTON, modelo="PENDIENTE"),
         dict(codigo="TOR-2", descripcion=f'Tornillo madera 1-1/4" (31,8 mm) estante a listón; recorrido disponible {est_lis:.1f} mm',
              cantidad=n_lis * TORNILLOS_ESTANTE_POR_LISTON, modelo="PENDIENTE"),
-        dict(codigo="TOR-3", descripcion=f'Tornillo madera 2" (50,8 mm) panel a paral; atraviesa {pan_tubo:.1f} mm y la punta asoma ~{50.8 - pan_tubo:.1f} mm',
-             cantidad=TORNILLOS_PANEL, modelo="PENDIENTE"),
+        dict(codigo="TOR-3", descripcion=f'Tornillo madera 2" (50,8 mm) panel/diagonal a paral; atraviesa {pan_tubo:.1f} mm y la punta asoma ~{50.8 - pan_tubo:.1f} mm',
+             cantidad=TORNILLOS_PANEL + 2 * TORNILLOS_DIAGONAL, modelo="PENDIENTE"),
+        dict(codigo="ESC-1", descripcion="Escuadra metálica antivuelco paral trasero a pared, con tornillos y chazos para el muro",
+             cantidad=ESCUADRAS_PARED, modelo="PENDIENTE: modelo según tipo de muro"),
     ]
 
 

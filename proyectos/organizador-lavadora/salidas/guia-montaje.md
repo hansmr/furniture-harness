@@ -1,6 +1,6 @@
 # Guía de montaje e instalación: Organizador de lavadora
 
-Rev. A, 2026-11-23. Ver `planos.pdf`, `explotado.pdf` y `despiece.md`.
+Rev. B, 2026-11-23. Ver `planos.pdf`, `explotado.pdf` y `despiece.md`.
 
 ## Antes de empezar
 
@@ -47,7 +47,13 @@ Rev. A, 2026-11-23. Ver `planos.pdf`, `explotado.pdf` y `despiece.md`.
 ## 7. Panel trasero
 
 - Apoya PAN-01 detrás de los parales del fondo, desde el estante 1 hasta los codos de arriba.
-- Atorníllalo a los parales con 4 tornillos TOR-3 (2"), 2 por paral. La punta asoma ~2 mm por delante del paral.
+- Atorníllalo a los parales con 8 tornillos TOR-3 (2"), 2 por paral. La punta asoma ~2 mm por delante del paral.
+
+## 7b. Diagonales laterales
+
+- Corta DIA-01 y DIA-02 del sobrante de triplex: 1439 x 60 mm, con los extremos a plomo (plano hoja 2).
+- Colócalas por fuera de cada costado, de abajo adelante hacia arriba atrás, apoyadas contra tees y codos.
+- Atornilla cada extremo al paral con un tornillo TOR-3 que atraviese el tubo (hueco previo de 4.5 mm en el PVC).
 
 ## 8. Estante 2
 
@@ -58,12 +64,16 @@ Rev. A, 2026-11-23. Ver `planos.pdf`, `explotado.pdf` y `despiece.md`.
 
 - Coloca el mueble sobre la lavadora sin que la toque en ningún punto.
 - Abre la tapa por completo y confirma que pasa por debajo del estante 1 (tapa 1240 mm, estante libre a 1343 mm).
-- Nivela el mueble. No se ancla a la pared (decisión del usuario).
-- No se calculó una carga máxima: usa los estantes para productos de aseo como se definió y distribuye el peso.
+- Nivela el mueble.
+- Fija los 2 parales traseros a la pared con escuadras ESC-1 a la altura del estante 2; evita el vuelco.
+- Prueba de carga antes de usar: pon pesos conocidos (p. ej. bolsas de 5 kg) en el estante 1 hasta 20 kg y mide cuánto baja el centro; si baja más de 3-4 mm, reduce la carga.
+- Carga recomendada (estimación, no ensayo): hasta 15-20 kg por estante, lo pesado abajo.
+- No la hales desde arriba, y no la uses cargada antes de fijar las escuadras: sin ellas, unos 6 kg de fuerza arriba la pueden volcar.
 
 ## Supuestos y pendientes
 
 - Campana del codo 1" supuesta en 22 mm (igual a la tee).
 - Material del listón de 18 mm, modelo exacto de tornillos, arandelas y soldadura: PENDIENTE.
 - Posición de tornillos (1/4 y 3/4 del listón) es una propuesta, no está modelada.
-- Carga máxima de los estantes: no calculada.
+- Carga recomendada de 15-20 kg por estante: estimación a mano con módulo típico de PVC (no del fabricante); confirmar con la prueba de carga.
+- Modelo de escuadra, tornillos y chazos: PENDIENTE (depende del tipo de muro).

@@ -1,6 +1,6 @@
 # Lista de materiales y despiece: Organizador de lavadora
 
-Generado 2026-11-23 desde `modelo/geometria.py`. Rev. A.
+Generado 2026-11-23 desde `modelo/geometria.py`. Rev. B.
 
 ## Materiales
 
@@ -13,7 +13,8 @@ Generado 2026-11-23 desde `modelo/geometria.py`. Rev. A.
 | LIS-18 | Listón 18 x 30 mm (material PENDIENTE) | 4 | und | PENDIENTE |  |
 | TOR-1 | Tornillo madera 1-3/4" (44,5 mm) + arandela, tubo a listón; recorrido disponible 51.4 mm (entra ~11 mm en el listón) | 8 | und | PENDIENTE |  |
 | TOR-2 | Tornillo madera 1-1/4" (31,8 mm) estante a listón; recorrido disponible 33.0 mm | 8 | und | PENDIENTE |  |
-| TOR-3 | Tornillo madera 2" (50,8 mm) panel a paral; atraviesa 48.4 mm y la punta asoma ~2.4 mm | 4 | und | PENDIENTE |  |
+| TOR-3 | Tornillo madera 2" (50,8 mm) panel/diagonal a paral; atraviesa 48.4 mm y la punta asoma ~2.4 mm | 8 | und | PENDIENTE |  |
+| ESC-1 | Escuadra metálica antivuelco paral trasero a pared, con tornillos y chazos para el muro | 2 | und | PENDIENTE |  |
 | ARA-1 | Arandela para TOR-1 | 8 | und | PENDIENTE |  |
 | SOL-PVC | Soldadura (cemento solvente) PVC | PENDIENTE | tarro | PENDIENTE |  |
 | SEL-BAR | Sellador para madera + barniz (elección del usuario) | PENDIENTE | - | PENDIENTE |  |
@@ -56,6 +57,8 @@ Optimización en barras de 6000 mm con 4 mm por corte:
 | LIS-02 | 646 | 30 | 18 |  |
 | LIS-03 | 636 | 30 | 18 |  |
 | LIS-04 | 636 | 30 | 18 |  |
+| DIA-01 | 1439 | 60 | 15 | extremos cortados a plomo (26.6° respecto al largo) |
+| DIA-02 | 1439 | 60 | 15 | extremos cortados a plomo (26.6° respecto al largo) |
 
 Muescas EST-01: 59 x 59 mm en las esquinas delanteras y 59 x 38 mm en las traseras.
 

@@ -72,6 +72,11 @@ def dibujar(ax, lim, elev, azim, titulo, lavadora=True, etiquetas=False):
                 cilindro(ax, c, c + np.array(d)*g.TEE["largo"]/2, g.TEE["de"]/2, C_ACC)
             if etiquetas:
                 ax.text(*(c + np.array([45, -60, 0])), p["codigo"], fontsize=7)
+        elif p["tipo"] == "diagonal":
+            v = np.array(g.vertices_diagonal(p))
+            caras = [v[[0,1,2,3]], v[[4,5,6,7]], v[[0,1,5,4]], v[[1,2,6,5]], v[[2,3,7,6]], v[[3,0,4,7]]]
+            if all(dentro(q, lim) for q in v) or not etiquetas:
+                ax.add_collection3d(Poly3DCollection(caras, facecolor=C_MAD, edgecolor="#5d4037", linewidths=0.5, alpha=0.8))
         elif p.get("muesca") and not etiquetas:
             prisma(ax, poly_muescas(p["origen"], p["dims"], p["muesca"]), p["origen"][2], p["dims"][2], C_MAD, 0.55)
         elif p.get("muesca"):

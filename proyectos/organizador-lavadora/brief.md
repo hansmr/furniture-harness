@@ -48,3 +48,6 @@ diámetro exterior del cuerpo de la tee, largo total de la tee, altura de la lav
 - Solo cabe un nivel con 350 mm libres; el estante 2 queda como remate con 215 mm hasta el techo (opción propuesta, pendiente de confirmar).
 - Fondo real de la lavadora (ficha dice 540 y 560 mm); se usa 560 para holguras.
 - Rigidez sin anclaje: posible necesidad de refuerzos extra (ver propuesta en el hilo).
+
+- Refuerzos (usuario 2026-11-22): diagonales laterales de triplex 15 mm + 2 escuadras antivuelco a la pared (reemplaza la decisión inicial de no anclar).
+- Carga recomendada: 15-20 kg por estante (estimación, confirmar con prueba de carga).

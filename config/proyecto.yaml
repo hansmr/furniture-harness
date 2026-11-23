@@ -1,0 +1,24 @@
+# Fuente de verdad del harness. "PENDIENTE" = bloquea la fase que lo usa.
+unidades: mm
+tolerancia_general: PENDIENTE   # depende del corte del proveedor
+pais_mercado: Colombia
+moneda: COP
+# Recomendación aceptada por delegación del usuario (punto 7): ISO 128 + ISO 5456-2 primer diedro.
+norma_dibujo: ISO 128
+proyeccion: primer_diedro
+formato_hoja: {planos: A3, guias: A4}
+idioma_salidas: es
+freecad:
+  version: "1.1.3"
+  sistema_operativo: Windows
+  carpeta_instalacion: "C:\\Program Files\\FreeCAD 1.1"
+  ruta_freecadcmd: "C:\\Program Files\\FreeCAD 1.1\\bin\\freecadcmd.exe"  # nombre del ejecutable por verificar en el equipo
+  workbenches: [Part, PartDesign, TechDraw, Spreadsheet]
+materiales_habilitados: [contrachapado, aglomerado_melaminico, mdf, pvc]
+herramientas_disponibles: [sierra_circular, sierra_caladora, router, taladro]
+fabricacion: corte_por_proveedor   # el usuario puede hacer cortes menores con sus herramientas
+corte_proveedor:
+  kerf_mm: 4
+  canteado: lo hace el usuario (proveedor no cantea)
+uniones_y_herrajes: por_proyecto
+formatos_salida: [PDF, PNG, STEP, FCStd, GLB]   # STEP/GLB para ver el 3D sin FreeCAD

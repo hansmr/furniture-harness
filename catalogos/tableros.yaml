@@ -1,0 +1,48 @@
+# Datos tomados de homecenter.com.co el 2026-11-22. Precio puede cambiar.
+# Medidas de plancha = medida real de la ficha (instrucción del usuario).
+items:
+  - codigo: TRX-15
+    descripcion: Tablero Triplex Refopanel 15mm (terciado estructural)
+    sku_proveedor: "746787"
+    marca: Refopanel
+    grosor_mm: 15
+    formato_mm: [1220, 2440]
+    acabado: cepillado, mate, rústico
+    color: natural   # confirmado por el usuario (el título dice "blanco")
+    precio_cop: 130000
+    proveedor: Homecenter Colombia
+    fuente: https://www.homecenter.com.co/homecenter-co/product/746787/
+  - codigo: TRX-18
+    descripcion: Tablero Triplex Refopanel 18mm (terciado estructural)
+    sku_proveedor: "746786"
+    marca: Refopanel
+    grosor_mm: 18
+    formato_mm: [1220, 2440]
+    acabado: cepillado, mate, rústico
+    color: natural   # confirmado por el usuario
+    precio_cop: 150000
+    proveedor: Homecenter Colombia
+    fuente: https://www.homecenter.com.co/homecenter-co/product/746786/
+  - codigo: MDP-RH-OLMO-15
+    descripcion: Aglomerado melamínico MDP RH color olmo 15mm
+    sku_proveedor: "254615"
+    marca: Kingply / Timbermac (la página muestra ambas)
+    grosor_mm: 15
+    formato_mm: [1830, 2440]
+    acabado: melamina brillante, veta madera
+    resistencia_humedad: RH
+    peso_kg: 47
+    precio_cop: 219900   # promoción válida 2026-10-28 a 2026-12-03; normal 249900
+    caras_melamina: PENDIENTE
+    proveedor: Homecenter Colombia
+    fuente: https://www.homecenter.com.co/homecenter-co/product/254615/
+  - codigo: MDF-RH-12
+    descripcion: Tablero MDF RH 12mm resistente a la humedad, color natural, mate
+    sku_proveedor: "911777"
+    marca: Trupan
+    grosor_mm: 12
+    formato_mm: [1830, 2440]
+    peso_kg: 36.847
+    precio_cop: 134900
+    proveedor: Homecenter Colombia
+    fuente: https://www.homecenter.com.co/homecenter-co/product/911777/

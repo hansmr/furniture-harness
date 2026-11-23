@@ -1,0 +1,9 @@
+# Catálogo: perfiles_madera
+# Solo datos verificados con proveedor o ficha técnica. Cada entrada lleva 'fuente'.
+# Ejemplo de forma (NO son datos reales):
+# - codigo: XXX
+#   descripcion: ...
+#   dimensiones: {...}
+#   proveedor: ...
+#   fuente: URL o "medido por usuario"
+items: []

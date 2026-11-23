@@ -80,8 +80,8 @@ def generar_bom():
     filas = []
     filas.append(dict(item="PVC-T-1", descripcion='Tubo PVC presión 1" RDE 13.5 x 6 m (Pavco)', cantidad=len(barras), unidad="tubo",
                       precio_unit=PRECIO_TUBO, fuente="catalogos/tubos_pvc.yaml"))
-    filas.append(dict(item="PVC-TEE-1", descripcion='Tee 1" presión, para soldar', cantidad=n_tee, unidad="und", precio_unit=None, fuente="PENDIENTE precio"))
-    filas.append(dict(item="PVC-COD-1", descripcion='Codo 90° 1" presión, para soldar', cantidad=n_codo, unidad="und", precio_unit=None, fuente="PENDIENTE precio y ficha"))
+    filas.append(dict(item="PVC-TEE-1", descripcion='Tee 1" presión, para soldar', cantidad=n_tee, unidad="und", precio_unit=None, fuente="PENDIENTE precio (no encontrado en Homecenter web)"))
+    filas.append(dict(item="PVC-COD-1", descripcion='Codo 90° 1" presión, para soldar (Pavco, 04755)', cantidad=n_codo, unidad="und", precio_unit=2100, fuente="catalogos/tubos_pvc.yaml (Homecenter 2026-11-23)"))
     filas.append(dict(item="TRX-15", descripcion="Triplex Refopanel 15 mm 1220 x 2440 (ya disponible)", cantidad=1, unidad="hoja", precio_unit=0,
                       fuente="usuario ya lo tiene; precio catálogo 130000"))
     filas.append(dict(item="LIS-18", descripcion=f"Listón 18 x {g.LISTON['ancho']} mm (material PENDIENTE)", cantidad=len(listones), unidad="und",
@@ -89,7 +89,7 @@ def generar_bom():
     for h in g.herrajes():
         filas.append(dict(item=h["codigo"], descripcion=h["descripcion"], cantidad=h["cantidad"], unidad="und", precio_unit=None, fuente="PENDIENTE modelo/precio"))
     filas.append(dict(item="ARA-1", descripcion="Arandela para TOR-1", cantidad=g.herrajes()[0]["cantidad"], unidad="und", precio_unit=None, fuente="PENDIENTE"))
-    filas.append(dict(item="SOL-PVC", descripcion="Soldadura (cemento solvente) PVC", cantidad=None, unidad="tarro", precio_unit=None, fuente="PENDIENTE cantidad/precio"))
+    filas.append(dict(item="SOL-PVC-946", descripcion="Soldadura PVC Soldaya 1/4 gal (946 cc), Soldacol; rinde ~215 uniones de 1\"", cantidad=1, unidad="tarro", precio_unit=53900, fuente="catalogos/tubos_pvc.yaml (Homecenter 2026-11-23); hay presentaciones más pequeñas"))
     filas.append(dict(item="SEL-BAR", descripcion="Sellador para madera + barniz (elección del usuario)", cantidad=None, unidad="-", precio_unit=None, fuente="usuario"))
     for f in filas:
         f["subtotal"] = (f["precio_unit"] * f["cantidad"]) if (f["precio_unit"] is not None and f["cantidad"] is not None) else None
@@ -163,7 +163,7 @@ def generar_bom():
     mx, mf, mb = g.muesca()
     md += ["", f"Muescas EST-01: {mx} x {mf} mm en las esquinas delanteras y {mx} x {mb} mm en las traseras.", "",
            "## Supuestos y pendientes", "",
-           "- Precio de tee y codo 1\", listón (material), tornillos, arandelas, soldadura PVC y acabado: PENDIENTE.",
+           "- Precio de tee 1\", listón (material), tornillos, arandelas, escuadras y acabado: PENDIENTE.",
            f"- Campana del codo 1\" supuesta igual a la tee ({g.CAMPANA_CODO} mm); brazo del codo tomado del menor medido. Armar en seco y recortar.",
            f"- Kerf de {KERF_TUBO} mm aplicado también al corte de tubo (valor de la config para el proveedor).",
            "- El triplex ya lo tiene el usuario: costo 0 en el total."]

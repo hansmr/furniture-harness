@@ -8,7 +8,7 @@ Generado 2026-11-23 desde `modelo/geometria.py`. Rev. B.
 |---|---|---|---|---|---|
 | PVC-T-1 | Tubo PVC presión 1" RDE 13.5 x 6 m (Pavco) | 2 | tubo | 38.900 | 77.800 |
 | PVC-TEE-1 | Tee 1" presión, para soldar | 4 | und | PENDIENTE |  |
-| PVC-COD-1 | Codo 90° 1" presión, para soldar | 8 | und | PENDIENTE |  |
+| PVC-COD-1 | Codo 90° 1" presión, para soldar (Pavco, 04755) | 8 | und | 2.100 | 16.800 |
 | TRX-15 | Triplex Refopanel 15 mm 1220 x 2440 (ya disponible) | 1 | hoja | 0 | 0 |
 | LIS-18 | Listón 18 x 30 mm (material PENDIENTE) | 4 | und | PENDIENTE |  |
 | TOR-1 | Tornillo madera 1-3/4" (44,5 mm) + arandela, tubo a listón; recorrido disponible 51.4 mm (entra ~11 mm en el listón) | 8 | und | PENDIENTE |  |
@@ -16,10 +16,10 @@ Generado 2026-11-23 desde `modelo/geometria.py`. Rev. B.
 | TOR-3 | Tornillo madera 2" (50,8 mm) panel/diagonal a paral; atraviesa 48.4 mm y la punta asoma ~2.4 mm | 8 | und | PENDIENTE |  |
 | ESC-1 | Escuadra metálica antivuelco paral trasero a pared, con tornillos y chazos para el muro | 2 | und | PENDIENTE |  |
 | ARA-1 | Arandela para TOR-1 | 8 | und | PENDIENTE |  |
-| SOL-PVC | Soldadura (cemento solvente) PVC | PENDIENTE | tarro | PENDIENTE |  |
+| SOL-PVC-946 | Soldadura PVC Soldaya 1/4 gal (946 cc), Soldacol; rinde ~215 uniones de 1" | 1 | tarro | 53.900 | 53.900 |
 | SEL-BAR | Sellador para madera + barniz (elección del usuario) | PENDIENTE | - | PENDIENTE |  |
 
-**Total con precios conocidos: $77.800 COP**
+**Total con precios conocidos: $148.500 COP**
 (faltan los precios marcados PENDIENTE).
 
 ## Cortes de tubo PVC 1"
@@ -64,7 +64,7 @@ Muescas EST-01: 59 x 59 mm en las esquinas delanteras y 59 x 38 mm en las traser
 
 ## Supuestos y pendientes
 
-- Precio de tee y codo 1", listón (material), tornillos, arandelas, soldadura PVC y acabado: PENDIENTE.
+- Precio de tee 1", listón (material), tornillos, arandelas, escuadras y acabado: PENDIENTE.
 - Campana del codo 1" supuesta igual a la tee (22 mm); brazo del codo tomado del menor medido. Armar en seco y recortar.
 - Kerf de 4 mm aplicado también al corte de tubo (valor de la config para el proveedor).
 - El triplex ya lo tiene el usuario: costo 0 en el total.

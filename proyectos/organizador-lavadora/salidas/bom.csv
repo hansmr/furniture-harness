@@ -1,7 +1,7 @@
 item,descripcion,cantidad,unidad,precio_unit_cop,subtotal_cop,fuente
 PVC-T-1,"Tubo PVC presión 1"" RDE 13.5 x 6 m (Pavco)",2,tubo,38900,77800,catalogos/tubos_pvc.yaml
-PVC-TEE-1,"Tee 1"" presión, para soldar",4,und,PENDIENTE,,PENDIENTE precio
-PVC-COD-1,"Codo 90° 1"" presión, para soldar",8,und,PENDIENTE,,PENDIENTE precio y ficha
+PVC-TEE-1,"Tee 1"" presión, para soldar",4,und,PENDIENTE,,PENDIENTE precio (no encontrado en Homecenter web)
+PVC-COD-1,"Codo 90° 1"" presión, para soldar (Pavco, 04755)",8,und,2100,16800,catalogos/tubos_pvc.yaml (Homecenter 2026-11-23)
 TRX-15,Triplex Refopanel 15 mm 1220 x 2440 (ya disponible),1,hoja,0,0,usuario ya lo tiene; precio catálogo 130000
 LIS-18,Listón 18 x 30 mm (material PENDIENTE),4,und,PENDIENTE,,PENDIENTE
 TOR-1,"Tornillo madera 1-3/4"" (44,5 mm) + arandela, tubo a listón; recorrido disponible 51.4 mm (entra ~11 mm en el listón)",8,und,PENDIENTE,,PENDIENTE modelo/precio
@@ -9,5 +9,5 @@ TOR-2,"Tornillo madera 1-1/4"" (31,8 mm) estante a listón; recorrido disponible
 TOR-3,"Tornillo madera 2"" (50,8 mm) panel/diagonal a paral; atraviesa 48.4 mm y la punta asoma ~2.4 mm",8,und,PENDIENTE,,PENDIENTE modelo/precio
 ESC-1,"Escuadra metálica antivuelco paral trasero a pared, con tornillos y chazos para el muro",2,und,PENDIENTE,,PENDIENTE modelo/precio
 ARA-1,Arandela para TOR-1,8,und,PENDIENTE,,PENDIENTE
-SOL-PVC,Soldadura (cemento solvente) PVC,PENDIENTE,tarro,PENDIENTE,,PENDIENTE cantidad/precio
+SOL-PVC-946,"Soldadura PVC Soldaya 1/4 gal (946 cc), Soldacol; rinde ~215 uniones de 1""",1,tarro,53900,53900,catalogos/tubos_pvc.yaml (Homecenter 2026-11-23); hay presentaciones más pequeñas
 SEL-BAR,Sellador para madera + barniz (elección del usuario),PENDIENTE,-,PENDIENTE,,usuario

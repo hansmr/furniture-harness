@@ -17,6 +17,19 @@ items:
     diametro_interior_mm: 21.81  # ídem
     precio_cop: 34900
     fuente: https://www.homecenter.com.co/homecenter-co/product/04722/tubo-de-presion-de-3-4x6m-11-400psi/65892/
+  - codigo: PVC-T-1
+    descripcion: Tubo PVC presión 1" x 6 m, RDE 13.5, 315 psi
+    sku_proveedor: "65890"
+    marca: Pavco Wavin
+    diametro_nominal: 1"
+    longitud_mm: 6000
+    presion_psi: 315
+    rde: 13.5
+    diametro_exterior_mm: 33.40   # Pavco download/363
+    espesor_pared_min_mm: 2.46    # ídem
+    diametro_interior_mm: 28.48   # ídem
+    precio_cop: 38900
+    fuente: https://www.homecenter.com.co/homecenter-co/product/04590/tubo-1x6m-presion-135-315-psi/65890/
 accesorios:
   - codigo: PVC-TEE-34
     descripcion: Tee 3/4" presión, campana para soldar
@@ -32,3 +45,9 @@ accesorios:
     nota: roscado; sobre tubo liso necesita adaptador macho roscado. Confirmar con usuario.
     precio_cop: 2550
     fuente: https://www.homecenter.com.co/homecenter-co/product/04743/tapon-roscado-3-4-presion/04743/
+  - codigo: PVC-TEE-1
+    descripcion: Tee 1" presión, campana para soldar
+    profundidad_campana_mm: PENDIENTE  # medir
+    diametro_exterior_boca_mm: PENDIENTE  # medir
+    largo_total_mm: PENDIENTE  # medir
+    precio_cop: PENDIENTE

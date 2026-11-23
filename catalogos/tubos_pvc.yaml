@@ -45,9 +45,22 @@ accesorios:
     nota: roscado; sobre tubo liso necesita adaptador macho roscado. Confirmar con usuario.
     precio_cop: 2550
     fuente: https://www.homecenter.com.co/homecenter-co/product/04743/tapon-roscado-3-4-presion/04743/
+  - codigo: PVC-COD-1
+    descripcion: Codo 90° 1" presión, para soldar
+    sku_proveedor: "04755"
+    marca: Pavco Wavin
+    dimensiones_usuario_mm: [60, 40, 65]   # medido por el usuario
+    precio_cop: 2100
+    fuente: https://www.homecenter.com.co/homecenter-co/product/04730/codo-90-x-1-presion/04755/
+  - codigo: SOL-PVC-946
+    descripcion: Soldadura PVC Soldaya 1/4 galón (946 cc) con aplicador, Soldacol. La ficha no dice "presión".
+    sku_proveedor: "793165"
+    rendimiento: 'aprox. 215 uniones de 1" (según ficha)'
+    precio_cop: 53900
+    fuente: https://www.homecenter.com.co/homecenter-co/product/793165/soldadura-soldaya-1-4-galon-con-aplicador/793165/
   - codigo: PVC-TEE-1
     descripcion: Tee 1" presión, campana para soldar
-    profundidad_campana_mm: PENDIENTE  # medir
-    diametro_exterior_boca_mm: PENDIENTE  # medir
-    largo_total_mm: PENDIENTE  # medir
-    precio_cop: PENDIENTE
+    profundidad_campana_mm: 22   # medido por el usuario
+    diametro_exterior_boca_mm: 40  # medido por el usuario
+    largo_total_mm: 70  # medido por el usuario
+    precio_cop: PENDIENTE  # no encontrado en homecenter.com.co (2026-11-23)

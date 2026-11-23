@@ -78,7 +78,7 @@ def herrajes():
     n_lis = sum(1 for p in piezas() if p["tipo"] == "liston")
     return [
         dict(codigo="ABR-1", descripcion='Abrazadera para tubo 1" (Ø ext. 33,4 mm), fijación con tornillo a madera', cantidad=n_lis * ABRAZADERAS_POR_LISTON + ABRAZADERAS_PANEL, modelo="PENDIENTE"),
-        dict(codigo="TOR-1", descripcion="Tornillo para madera estante→listón", cantidad="PENDIENTE", modelo="PENDIENTE"),
+        dict(codigo="TOR-1", descripcion="Tornillo para madera estante a listón", cantidad="PENDIENTE", modelo="PENDIENTE"),
     ]
 
 

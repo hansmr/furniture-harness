@@ -66,6 +66,8 @@ if True:  # freecadcmd ejecuta el script directamente
     Import.export([o for o in doc.Objects if hasattr(o, "Shape")], os.path.join(salidas, "organizador-lavadora.step"))
     for ok, t in g.verificaciones():
         print("OK   " if ok else "FALTA", t)
+    for h in g.herrajes():
+        print(f"  herraje {h['codigo']}: {h['descripcion']} x {h['cantidad']} ({h['modelo']})")
     for c, L in g.longitudes_corte():
         print(f"  corte {c}: {L} mm")
     # Vistas PNG solo si hay interfaz gráfica (freecadcmd no la tiene)

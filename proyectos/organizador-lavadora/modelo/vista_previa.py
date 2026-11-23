@@ -89,8 +89,8 @@ fig = plt.figure(figsize=(14, 7), dpi=150)
 cx, cy, z1 = g.CX, g.CY, g.Z_EST1
 dibujar(fig.add_subplot(1,2,1, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+200),(z1-120, z1+160)), 22, -50,
         "Detalle esquina delantera, estante 1", lavadora=False, etiquetas=True)
-dibujar(fig.add_subplot(1,2,2, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+200),(g.Z_PISO-40, g.Z_PISO+240)), 22, -50,
-        "Detalle esquina delantera, piso", lavadora=False, etiquetas=True)
-fig.suptitle("Uniones: el paral atraviesa el estante por una perforación de 35 mm y el estante apoya sobre la tee y el listón", fontsize=11)
+dibujar(fig.add_subplot(1,2,2, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+200),(g.Z_EST2-120, g.Z_EST2+160)), 22, -50,
+        "Detalle esquina delantera, estante 2 (remate)", lavadora=False, etiquetas=True)
+fig.suptitle("Uniones: el estante va entre parales, apoyado en el listón y fijado con abrazaderas al larguero (sin perforaciones)", fontsize=11)
 fig.savefig(os.path.join(out_dir, "vista-detalle-uniones.png"), bbox_inches="tight")
 print("ok")

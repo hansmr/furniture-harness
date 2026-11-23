@@ -20,12 +20,22 @@ CY = 295                 # mitad de distancia entre ejes de parales en Y
 MARGEN_ESTANTE = 40      # del eje del paral al borde del estante
 Z_EST1 = 1360            # eje de las tees del estante 1 (estante apoya en z+35)
 Z_EST2 = 1815            # eje de las tees del estante 2
-# Estante 2 es el remate superior (opción A): no hay largueros por encima.
-TUBO_PASANTE = 25        # tubo que sobresale por encima de la tee superior para atravesar el estante 2
+# Estante 2 es el remate superior: codos arriba, sin largueros por encima.
+# Estantes SIN perforaciones (usuario 2026-11-22): van entre parales, apoyados en listones
+# sobre los largueros y fijados con abrazaderas para tubo 1" atornilladas (modelo PENDIENTE).
+HOLGURA_PARAL = 2        # holgura lateral del estante contra la tee, por lado
+ABRAZADERAS_POR_LISTON = 2
+ABRAZADERAS_PANEL = 4
 LISTON = dict(alto=18, ancho=30)  # PROPUESTA: listón sobre larguero; material PENDIENTE
 HOLGURA_ENVASE = 20
 Z_PISO = TEE["de"] / 2   # eje de los codos del piso
 HOLGURA_MANO = 100       # sobre la tapa abierta
+
+
+def dims_estante():
+    lx = 2 * (CX - TEE["de"] / 2 - HOLGURA_PARAL)     # cabe entre las tees de los parales
+    ly = 2 * (CY + MARGEN_ESTANTE)                      # sobresale por delante y por detrás de los largueros
+    return lx, ly
 
 
 def piezas():
@@ -37,8 +47,6 @@ def piezas():
     for (x, y) in esquinas:
         for z0, z1 in ((Z_PISO, Z_EST1), (Z_EST1, Z_EST2)):
             p.append(dict(codigo=f"TUB-{n:02d}", tipo="tubo", a=(x, y, z0), b=(x, y, z1), de=TUBO_DE)); n += 1
-        # tramo pasante sobre la tee superior (atraviesa el estante 2)
-        p.append(dict(codigo=f"TUB-{n:02d}", tipo="tubo", a=(x, y, Z_EST2), b=(x, y, Z_EST2 + r_run + TUBO_PASANTE), de=TUBO_DE)); n += 1
     for sx in (-1, 1):  # largueros de piso en Y
         p.append(dict(codigo=f"TUB-{n:02d}", tipo="tubo", a=(sx*CX, -CY, Z_PISO), b=(sx*CX, CY, Z_PISO), de=TUBO_DE)); n += 1
     for z in (Z_EST1, Z_EST2):  # largueros en X frente y fondo
@@ -47,22 +55,31 @@ def piezas():
     k = 1
     for (x, y) in esquinas:
         p.append(dict(codigo=f"COD-{k:02d}", tipo="codo", centro=(x, y, Z_PISO), ramas=[(0, 0, 1), (0, -1 if y > 0 else 1, 0)])); k += 1
+    for (x, y) in esquinas:
+        p.append(dict(codigo=f"COD-{k:02d}", tipo="codo", centro=(x, y, Z_EST2), ramas=[(0, 0, -1), (-1 if x > 0 else 1, 0, 0)])); k += 1
     t = 1
-    for z in (Z_EST1, Z_EST2):
-        for (x, y) in esquinas:
-            p.append(dict(codigo=f"TEE-{t:02d}", tipo="tee", centro=(x, y, z), ramas=[(0, 0, 1), (0, 0, -1), (-1 if x > 0 else 1, 0, 0)])); t += 1
-    lx, ly = 2 * (CX + MARGEN_ESTANTE), 2 * (CY + MARGEN_ESTANTE)
+    for (x, y) in esquinas:
+        p.append(dict(codigo=f"TEE-{t:02d}", tipo="tee", centro=(x, y, Z_EST1), ramas=[(0, 0, 1), (0, 0, -1), (-1 if x > 0 else 1, 0, 0)])); t += 1
+    lx, ly = dims_estante()
     l = 1
     for i, z in enumerate((Z_EST1, Z_EST2), 1):
-        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, -ly/2, z + r_run), dims=(lx, ly, TRIPLEX),
-                      perforaciones=[(sx*CX, sy*CY) for sx in (-1, 1) for sy in (-1, 1)]))
-        for sy in (-1, 1):  # listones sobre largueros, entre tees
+        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, -ly/2, z + r_run), dims=(lx, ly, TRIPLEX), perforaciones=[]))
+        for sy in (-1, 1):  # listones sobre largueros, entre tees/codos
             largo = 2 * CX - TEE["de"]
             p.append(dict(codigo=f"LIS-{l:02d}", tipo="liston", origen=(-largo/2, sy*CY - LISTON["ancho"]/2, z + r_run - LISTON["alto"]),
                           dims=(largo, LISTON["ancho"], LISTON["alto"]), perforaciones=[])); l += 1
     y0 = CY + TUBO_DE / 2
-    p.append(dict(codigo="PAN-01", tipo="tablero", origen=(-lx/2, y0, Z_EST1), dims=(lx, TRIPLEX, Z_EST2 - Z_EST1 + r_run), perforaciones=[]))
+    pan_x = 2 * (CX + MARGEN_ESTANTE)
+    p.append(dict(codigo="PAN-01", tipo="tablero", origen=(-pan_x/2, y0, Z_EST1), dims=(pan_x, TRIPLEX, Z_EST2 - Z_EST1 + r_run), perforaciones=[]))
     return p
+
+
+def herrajes():
+    n_lis = sum(1 for p in piezas() if p["tipo"] == "liston")
+    return [
+        dict(codigo="ABR-1", descripcion='Abrazadera para tubo 1" (Ø ext. 33,4 mm), fijación con tornillo a madera', cantidad=n_lis * ABRAZADERAS_POR_LISTON + ABRAZADERAS_PANEL, modelo="PENDIENTE"),
+        dict(codigo="TOR-1", descripcion="Tornillo para madera estante→listón", cantidad="PENDIENTE", modelo="PENDIENTE"),
+    ]
 
 
 def longitudes_corte():
@@ -74,17 +91,18 @@ def longitudes_corte():
             continue
         a, b = p["a"], p["b"]
         L = sum((bi - ai) ** 2 for ai, bi in zip(a, b)) ** 0.5
-        extremos = 1 if p["b"][2] > Z_EST2 else 2   # el tramo pasante tiene un solo extremo en accesorio
-        out.append((p["codigo"], round(L - extremos * c)))
+        out.append((p["codigo"], round(L - 2 * c)))
     return out
 
 
 def verificaciones():
     """Comprobaciones contra datos verificados. Devuelve lista de (ok, texto)."""
     r = []
-    lx, ly = 2 * (CX + MARGEN_ESTANTE), 2 * (CY + MARGEN_ESTANTE)
-    r.append((lx <= ESPACIO["ancho"], f"Ancho estante {lx} <= espacio {ESPACIO['ancho']}"))
+    lx, ly = dims_estante()
+    ancho_total = 2 * (CX + MARGEN_ESTANTE)
+    r.append((ancho_total <= ESPACIO["ancho"], f"Ancho total (panel) {ancho_total} <= espacio {ESPACIO['ancho']}"))
     r.append((ly + TRIPLEX <= ESPACIO["fondo"], f"Fondo estante+panel {ly + TRIPLEX} <= espacio {ESPACIO['fondo']}"))
+    r.append((True, f"Estante {lx:.0f} x {ly:.0f} mm, sin perforaciones (INFORMATIVO)"))
     libre_x = 2 * CX - TEE["de"]
     r.append((libre_x > LAVADORA["ancho"], f"Paso libre entre parales {libre_x} > lavadora {LAVADORA['ancho']}"))
     bajo_est1 = Z_EST1 - TUBO_DE / 2
@@ -95,7 +113,7 @@ def verificaciones():
     libre1 = (Z_EST2 - r_run) - top_est1
     r.append((libre1 >= ENVASE_MAX + HOLGURA_ENVASE, f"Altura libre estante 1 {libre1:.0f} >= envase {ENVASE_MAX} + {HOLGURA_ENVASE}"))
     top_est2 = Z_EST2 + r_run + TRIPLEX
-    tope = Z_EST2 + r_run + TUBO_PASANTE
+    tope = top_est2
     r.append((tope < ESPACIO["alto"], f"Altura total {tope:.0f} < techo {ESPACIO['alto']}"))
     r.append((True, f"Altura libre sobre estante 2 hasta el techo: {ESPACIO['alto'] - top_est2:.0f} mm (INFORMATIVO)"))
     return r
@@ -104,6 +122,9 @@ def verificaciones():
 if __name__ == "__main__":
     for ok, t in verificaciones():
         print("OK  " if ok else "FALTA", t)
+    print("\nHerrajes:")
+    for h in herrajes():
+        print(f"  {h['codigo']}: {h['descripcion']} x {h['cantidad']} ({h['modelo']})")
     print("\nLongitudes de corte (mm):")
     for c, L in longitudes_corte():
         print(f"  {c}: {L}")

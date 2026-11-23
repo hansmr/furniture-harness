@@ -50,8 +50,11 @@ def construir():
         if p["tipo"] == "tubo":
             shp = tubo(p["a"], p["b"], p["de"])
         elif p["tipo"] in ("tee", "codo"):
-            # Codo modelado con medidas de la tee (PENDIENTE medir codo 1")
-            shp = cuerpo_accesorio(p["centro"], g.TEE["de"], g.TEE["largo"], p["ramas"])
+            if p["tipo"] == "codo":
+                brazo = min(g.CODO["extremos"]) - g.CODO["de"] / 2
+                shp = cuerpo_accesorio(p["centro"], g.CODO["de"], 2 * brazo, p["ramas"])
+            else:
+                shp = cuerpo_accesorio(p["centro"], g.TEE["de"], g.TEE["largo"], p["ramas"])
         else:
             shp = tablero(p["origen"], p["dims"], p["perforaciones"], perf, p.get("muesca"))  # tablero o listón
         obj = doc.addObject("Part::Feature", p["codigo"].replace("-", "_"))

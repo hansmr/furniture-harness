@@ -10,6 +10,9 @@ ESPACIO = dict(ancho=840, fondo=710, alto=2080)         # usuario
 LAVADORA = dict(ancho=540, fondo=560, alto=850, alto_tapa_abierta=1240)  # LG WT9DPB + medida usuario
 TUBO_DE = 33.40          # 1" RDE 13.5, Pavco
 TEE = dict(de=40, largo=70, alto=60)   # tee 1", medido por el usuario (7 x 6 x 4 cm)
+CODO = dict(de=40, extremos=(60, 65))  # codo 90° 1", medido por el usuario: 6 x 4 x 6,5 cm
+# Brazo desde el eje = extremo - de/2 -> 40 y 45 mm. Se usa el menor (corte más largo; se ajusta en seco).
+CAMPANA_CODO = 22        # SUPUESTO: igual a la tee (misma serie). Confirmar en armado en seco.
 TRIPLEX = 15             # TRX-15
 CAMPANA_1 = 22           # profundidad de campana tee 1", medido por el usuario
 ENVASE_MAX = 350         # altura máxima de envases, usuario
@@ -97,7 +100,8 @@ def piezas():
         p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, y_fr, z + r_run), dims=(lx, y_fo - y_fr, TRIPLEX),
                       perforaciones=[], muesca=mus))
         for sy in (-1, 1):  # listones sobre largueros, entre tees/codos
-            largo = 2 * (CX - TEE["largo"] / 2) - 2 * HOLGURA_PARAL   # entre las bocas de tees/codos
+            brazo = TEE["largo"] / 2 if i == 1 else min(CODO["extremos"]) - CODO["de"] / 2
+            largo = 2 * (CX - brazo) - 2 * HOLGURA_PARAL   # entre las bocas de tees (est. 1) o codos (est. 2)
             p.append(dict(codigo=f"LIS-{l:02d}", tipo="liston", origen=(-largo/2, sy*CY - LISTON["ancho"]/2, z + r_run - LISTON["alto"]),
                           dims=(largo, LISTON["ancho"], LISTON["alto"]), perforaciones=[])); l += 1
     y0 = y_panel()
@@ -122,16 +126,24 @@ def herrajes():
     ]
 
 
+def _desc_accesorio(punto):
+    """Distancia del centro del accesorio al fondo de su campana, según qué accesorio hay en ese punto."""
+    z = punto[2]
+    if abs(z - Z_EST1) < 1e-6:
+        return TEE["largo"] / 2 - CAMPANA_1
+    brazo = min(CODO["extremos"]) - CODO["de"] / 2
+    return brazo - CAMPANA_CODO
+
+
 def longitudes_corte():
-    """Longitud de corte de cada tubo = distancia entre centros - 2*(centro a fondo de campana)."""
-    c = TEE["largo"] / 2 - CAMPANA_1   # centro del accesorio al fondo de la campana (aprox. con medidas del usuario)
+    """Longitud de corte = distancia entre centros - (centro a fondo de campana) en cada extremo."""
     out = []
     for p in piezas():
         if p["tipo"] != "tubo":
             continue
         a, b = p["a"], p["b"]
         L = sum((bi - ai) ** 2 for ai, bi in zip(a, b)) ** 0.5
-        out.append((p["codigo"], round(L - 2 * c)))
+        out.append((p["codigo"], round(L - _desc_accesorio(a) - _desc_accesorio(b))))
     return out
 
 

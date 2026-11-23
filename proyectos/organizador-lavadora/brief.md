@@ -16,6 +16,8 @@ Estado: BORRADOR — pendiente de aprobación del usuario.
 - Tee 1": diámetro exterior 40 mm, 70 × 60 × 40 mm, campana 22 mm (medido por el usuario).
 - Envases: altura máxima 350 mm (usuario).
 - Apoyo de estantes: listón sobre larguero aprobado por el usuario (material PENDIENTE).
+- Estantes sin perforaciones; estante 1 de 800 mm con muescas en esquinas (usuario).
+- Fijación: tornillos que atraviesan el tubo (hueco pasante con broca normal), sin abrazaderas (usuario).
 
 ## Datos técnicos verificados
 | Dato | Valor | Fuente |

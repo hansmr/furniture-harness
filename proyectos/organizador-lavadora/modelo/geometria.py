@@ -22,11 +22,13 @@ Z_EST1 = 1360            # eje de las tees del estante 1 (estante apoya en z+35)
 Z_EST2 = 1815            # eje de las tees del estante 2
 # Estante 2 es el remate superior: codos arriba, sin largueros por encima.
 # Estantes SIN perforaciones (usuario 2026-11-22): van entre parales, apoyados en listones
-# sobre los largueros y fijados con abrazaderas para tubo 1" atornilladas (modelo PENDIENTE).
+# sobre los largueros. Fijación con tornillos que atraviesan el tubo (usuario 2026-11-22), sin abrazaderas.
 HOLGURA_PARAL = 2        # holgura del estante contra el tubo/tee, por lado
 VARIANTE_ESTANTE = "muescas"   # "muescas": 800 mm con muescas en esquinas (usuario 2026-11-22) | "entre_parales": 676 mm
-ABRAZADERAS_POR_LISTON = 2
-ABRAZADERAS_PANEL = 4
+TORNILLOS_TUBO_POR_LISTON = 2     # tubo -> listón, desde abajo
+TORNILLOS_ESTANTE_POR_LISTON = 2  # estante -> listón, desde arriba
+TORNILLOS_PANEL = 4               # panel -> parales del fondo, desde atrás
+BROCA_PASO_TUBO = 4.5             # PROPUESTA: hueco pasante en el PVC para que el tornillo pase libre
 LISTON = dict(alto=18, ancho=30)  # PROPUESTA: listón sobre larguero; material PENDIENTE
 HOLGURA_ENVASE = 20
 Z_PISO = TEE["de"] / 2   # eje de los codos del piso
@@ -105,10 +107,18 @@ def piezas():
 
 
 def herrajes():
+    """Tornillos. Largos calculados con grosores del modelo; tipo/calibre exacto: PENDIENTE de catálogo."""
     n_lis = sum(1 for p in piezas() if p["tipo"] == "liston")
+    pasa_tubo = TUBO_DE + LISTON["alto"]          # tubo + listón
+    est_lis = TRIPLEX + LISTON["alto"]             # estante + listón
+    pan_tubo = TRIPLEX + TUBO_DE                   # panel + paral
     return [
-        dict(codigo="ABR-1", descripcion='Abrazadera para tubo 1" (Ø ext. 33,4 mm), fijación con tornillo a madera', cantidad=n_lis * ABRAZADERAS_POR_LISTON + ABRAZADERAS_PANEL, modelo="PENDIENTE"),
-        dict(codigo="TOR-1", descripcion="Tornillo para madera estante a listón", cantidad="PENDIENTE", modelo="PENDIENTE"),
+        dict(codigo="TOR-1", descripcion=f'Tornillo madera 2" (50,8 mm) tubo a listón; recorrido disponible {pasa_tubo:.1f} mm',
+             cantidad=n_lis * TORNILLOS_TUBO_POR_LISTON, modelo="PENDIENTE"),
+        dict(codigo="TOR-2", descripcion=f'Tornillo madera 1-1/4" (31,8 mm) estante a listón; recorrido disponible {est_lis:.1f} mm',
+             cantidad=n_lis * TORNILLOS_ESTANTE_POR_LISTON, modelo="PENDIENTE"),
+        dict(codigo="TOR-3", descripcion=f'Tornillo madera 2" (50,8 mm) panel a paral; atraviesa {pan_tubo:.1f} mm y la punta asoma ~{50.8 - pan_tubo:.1f} mm',
+             cantidad=TORNILLOS_PANEL, modelo="PENDIENTE"),
     ]
 
 

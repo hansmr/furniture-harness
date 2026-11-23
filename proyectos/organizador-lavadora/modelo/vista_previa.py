@@ -110,6 +110,6 @@ dibujar(fig.add_subplot(1,2,1, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+2
         "Detalle esquina delantera, estante 1", lavadora=False, etiquetas=True)
 dibujar(fig.add_subplot(1,2,2, projection="3d"), ((cx-200, cx+80),(-cy-80, -cy+200),(g.Z_EST2-120, g.Z_EST2+160)), 22, -50,
         "Detalle esquina delantera, estante 2 (remate)", lavadora=False, etiquetas=True)
-fig.suptitle("Uniones: estante 1 con muescas que abrazan el paral; estante 2 entero sobre los codos. Ambos apoyan en listones y se fijan con abrazaderas", fontsize=11)
+fig.suptitle("Uniones: estante 1 con muescas que abrazan el paral; estante 2 entero sobre los codos. Ambos apoyan en listones y se fijan con tornillos que atraviesan el tubo", fontsize=11)
 fig.savefig(os.path.join(out_dir, "vista-detalle-uniones.png"), bbox_inches="tight")
 print("ok")

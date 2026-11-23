@@ -30,8 +30,13 @@ def cuerpo_accesorio(centro, de, largo, ramas):
     return sol.removeSplitter()
 
 
-def tablero(origen, dims, perforaciones, de_perf):
+def tablero(origen, dims, perforaciones, de_perf, muesca=None):
     caja = Part.makeBox(*dims, V(*origen))
+    if muesca:
+        mx, my = muesca
+        x0, y0, z0 = origen
+        for (ex, ey) in ((x0, y0), (x0 + dims[0] - mx, y0), (x0, y0 + dims[1] - my), (x0 + dims[0] - mx, y0 + dims[1] - my)):
+            caja = caja.cut(Part.makeBox(mx, my, dims[2] + 2, V(ex, ey, z0 - 1)))
     for (x, y) in perforaciones:
         caja = caja.cut(Part.makeCylinder(de_perf / 2, dims[2] + 2, V(x, y, origen[2] - 1)))
     return caja
@@ -47,7 +52,7 @@ def construir():
             # Codo modelado con medidas de la tee (PENDIENTE medir codo 1")
             shp = cuerpo_accesorio(p["centro"], g.TEE["de"], g.TEE["largo"], p["ramas"])
         else:
-            shp = tablero(p["origen"], p["dims"], p["perforaciones"], perf)  # tablero o listón
+            shp = tablero(p["origen"], p["dims"], p["perforaciones"], perf, p.get("muesca"))  # tablero o listón
         obj = doc.addObject("Part::Feature", p["codigo"].replace("-", "_"))
         obj.Label = p["codigo"]
         obj.Shape = shp

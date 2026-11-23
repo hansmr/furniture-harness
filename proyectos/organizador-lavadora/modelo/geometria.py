@@ -23,7 +23,8 @@ Z_EST2 = 1815            # eje de las tees del estante 2
 # Estante 2 es el remate superior: codos arriba, sin largueros por encima.
 # Estantes SIN perforaciones (usuario 2026-11-22): van entre parales, apoyados en listones
 # sobre los largueros y fijados con abrazaderas para tubo 1" atornilladas (modelo PENDIENTE).
-HOLGURA_PARAL = 2        # holgura lateral del estante contra la tee, por lado
+HOLGURA_PARAL = 2        # holgura del estante contra el tubo/tee, por lado
+VARIANTE_ESTANTE = "muescas"   # "muescas": 800 mm con muescas en esquinas (usuario 2026-11-22) | "entre_parales": 676 mm
 ABRAZADERAS_POR_LISTON = 2
 ABRAZADERAS_PANEL = 4
 LISTON = dict(alto=18, ancho=30)  # PROPUESTA: listón sobre larguero; material PENDIENTE
@@ -32,7 +33,15 @@ Z_PISO = TEE["de"] / 2   # eje de los codos del piso
 HOLGURA_MANO = 100       # sobre la tapa abierta
 
 
+def muesca():
+    """Tamaño de la muesca cuadrada en cada esquina del estante 1 (libra el paral que sigue hacia arriba)."""
+    m = MARGEN_ESTANTE + TUBO_DE / 2 + HOLGURA_PARAL
+    return (round(m), round(m))
+
+
 def dims_estante():
+    if VARIANTE_ESTANTE == "muescas":
+        return 2 * (CX + MARGEN_ESTANTE), 2 * (CY + MARGEN_ESTANTE)
     lx = 2 * (CX - TEE["de"] / 2 - HOLGURA_PARAL)     # cabe entre las tees de los parales
     ly = 2 * (CY + MARGEN_ESTANTE)                      # sobresale por delante y por detrás de los largueros
     return lx, ly
@@ -63,7 +72,10 @@ def piezas():
     lx, ly = dims_estante()
     l = 1
     for i, z in enumerate((Z_EST1, Z_EST2), 1):
-        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, -ly/2, z + r_run), dims=(lx, ly, TRIPLEX), perforaciones=[]))
+        # Estante 1: el paral sigue hacia arriba -> muescas. Estante 2: arriba solo hay codos -> sin muescas.
+        mus = muesca() if (VARIANTE_ESTANTE == "muescas" and i == 1) else None
+        p.append(dict(codigo=f"EST-{i:02d}", tipo="tablero", origen=(-lx/2, -ly/2, z + r_run), dims=(lx, ly, TRIPLEX),
+                      perforaciones=[], muesca=mus))
         for sy in (-1, 1):  # listones sobre largueros, entre tees/codos
             largo = 2 * CX - TEE["de"]
             p.append(dict(codigo=f"LIS-{l:02d}", tipo="liston", origen=(-largo/2, sy*CY - LISTON["ancho"]/2, z + r_run - LISTON["alto"]),
@@ -102,7 +114,10 @@ def verificaciones():
     ancho_total = 2 * (CX + MARGEN_ESTANTE)
     r.append((ancho_total <= ESPACIO["ancho"], f"Ancho total (panel) {ancho_total} <= espacio {ESPACIO['ancho']}"))
     r.append((ly + TRIPLEX <= ESPACIO["fondo"], f"Fondo estante+panel {ly + TRIPLEX} <= espacio {ESPACIO['fondo']}"))
-    r.append((True, f"Estante {lx:.0f} x {ly:.0f} mm, sin perforaciones (INFORMATIVO)"))
+    txt = f"Estante {lx:.0f} x {ly:.0f} mm, sin perforaciones"
+    if VARIANTE_ESTANTE == "muescas":
+        txt += f"; estante 1 con muescas de {muesca()[0]} x {muesca()[1]} mm en las 4 esquinas"
+    r.append((True, txt + " (INFORMATIVO)"))
     libre_x = 2 * CX - TEE["de"]
     r.append((libre_x > LAVADORA["ancho"], f"Paso libre entre parales {libre_x} > lavadora {LAVADORA['ancho']}"))
     bajo_est1 = Z_EST1 - TUBO_DE / 2

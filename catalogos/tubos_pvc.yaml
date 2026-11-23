@@ -1,6 +1,6 @@
 # Datos tomados de homecenter.com.co el 2026-11-22 (Pavco Wavin). Precio puede cambiar.
 # La ficha NO publica diámetro exterior ni espesor de pared.
-# diametro_exterior_mm: valor estándar 3/4" IPS (1.050"); VERIFICAR con calibrador antes de fabricar.
+# Dimensiones del tubo: https://pavcowavin.com.co/download/363 . Campana de accesorios no publicada: medir.
 items:
   - codigo: PVC-T-34
     descripcion: Tubo PVC presión 3/4" x 6 m, 400 psi (título "11-400psi")
@@ -11,8 +11,10 @@ items:
     presion_psi: 400
     norma: NTC 382 (según ficha)
     union: soldada (cemento solvente), extremo liso
-    diametro_exterior_mm: 26.67  # VERIFICAR
-    espesor_pared_mm: PENDIENTE  # medir
+    rde: 11
+    diametro_exterior_mm: 26.67  # Pavco, hoja especificaciones PVC presión (download/363)
+    espesor_pared_min_mm: 2.43   # ídem
+    diametro_interior_mm: 21.81  # ídem
     precio_cop: 34900
     fuente: https://www.homecenter.com.co/homecenter-co/product/04722/tubo-de-presion-de-3-4x6m-11-400psi/65892/
 accesorios:
